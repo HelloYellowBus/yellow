@@ -3,19 +3,35 @@
     <v-col cols="11">
       <v-card>
 				
-				<gmap-map :center="center" :zoom="12" style="width: 100%; height: 500px" ref="map">
-					<gmap-polyline v-if="path.length > 0" :path="path" :editable="true" @path_changed="updateEdited($event)"
-							@rightclick="handleClickForDelete"
-							ref="polyline">
-					</gmap-polyline>
-				</gmap-map>
+				<GmapMap 
+					:center="center" 
+					:zoom="12" 
+					style="width: 100%; height: 500px" 
+					ref="map">
+
+					<GmapMarker
+						v-for="m in markers" 
+						:key="m.id"
+						:icon="icon"
+						:position="m" 
+						:clickable="true" 
+						@click="center=m"/>
+
+					<GmapPolyline
+						:options="{'strokeColor': '#808080'}" 
+						:path="markers"/>
+
+				</GmapMap>
 
         <v-card-title class="pb-0">Number 10</v-card-title>
 
         <v-card-text class="text--primary">
-          <div>Whitehaven Beach</div>
-
-          <div>Whitsunday Island, Whitsunday Islands</div>
+          <div>
+						<v-icon>mdi-account-multiple</v-icon>
+						<v-icon>mdi-temperature-celsius</v-icon>
+						<v-icon>mdi-water-percent</v-icon>
+						<v-icon>mdi-phone-forward</v-icon>
+					</div>
         </v-card-text>
 
         <v-card-actions>
@@ -34,68 +50,26 @@
 	}
 </style>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.0/vue.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.4/lodash.js"></script>
 <script>
-
-function closeLoop (path) {
-	return path.concat(path.slice(0, 1))
-}
-
 export default {
 	name: "main",
 	data () {
 		return {
-			center: {lat: 1.38, lng: 103.8},
-			edited: null,
-			path: [
-				{lat: 1.33, lng: 103.75},
-				{lat: 1.43, lng: 103.85},
-			],
-			mvcPath: null,
-			errorMessage: null,
-			polylineGeojson: '',
+			center: {
+				lat: 10.0,
+				lng: 10.0
+			},
+			markers: [{ lat: 10.0, lng: 10.0 },{ lat: 10.1, lng: 10.1}],
+			icon: {
+				url: require('./../assets/bus.png'),
+				size: {width: 50, height: 50, f: 'px', b: 'px'},
+				scaledSize: {width: 50, height: 50, f: 'px', b: 'px'}
+			}
 		}
 	},
 	computed: {
-		polylinePath: function () {
-			if (!this.mvcPath) return null
-			let path = [];
-			for (let j=0; j<this.mvcPath.getLength(); j++) {
-				let point = this.mvcPath.getAt(j);
-				path.push({lat: point.lat(), lng: point.lng()});
-			}
-			return path
-		}
 	},
 	methods: {
-		updateCenter: function (place) {
-			this.center = {
-				lat: place.geometry.location.lat(),
-				lng: place.geometry.location.lng(),
-			}
-		},
-		updateEdited: function (mvcPath) {
-			this.mvcPath = mvcPath
-		},
-		handleClickForDelete($event) {
-			if ($event.vertex) {
-				this.$refs.polyline.$polylineObject.getPaths()
-					.getAt($event.path)
-					.removeAt($event.vertex)
-			}
-		},
-		readGeojson: function ($event) {
-			try {
-				this.polylineGeojson = $event.target.value
-				var v = JSON.parse($event.target.value);
-				this.path = v.coordinates
-					.map(([lng, lat]) => ({lat, lng}))
-				this.errorMessage = null
-			} catch (err) {
-				this.errorMessage = err.message
-			}
-		}
 	}
 };
 </script>
