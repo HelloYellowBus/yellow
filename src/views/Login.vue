@@ -1,8 +1,8 @@
 <template>
   <v-row align="center" justify="center">
     <v-col cols="12" sm="8" md="4">
-      <v-card class="elevation-12">
-        <v-toolbar color="primary" dark flat>
+      <v-card class="elevation-1">
+        <v-toolbar color="white" flat>
           <v-toolbar-title>Login form</v-toolbar-title>
         </v-toolbar>
         <v-card-text>
@@ -14,7 +14,7 @@
         <v-card-text>You don't have an accocunt? You can <router-link to="/signup">create one</router-link>.</v-card-text>
         <v-card-actions>
           <v-spacer/>
-          <v-btn color="primary" @click="login">Login</v-btn>
+          <v-btn color="white" @click="login">Login</v-btn>
         </v-card-actions>
       </v-card>
     </v-col>
@@ -38,6 +38,7 @@ export default {
       firebase.auth().signInWithEmailAndPassword(this.email, this.password)
       .then(user => {
           console.log(user)
+          console.log(firebase.auth().currentUser)
           this.$router.replace('main')
         }).catch(err => {
           alert(err.message)
