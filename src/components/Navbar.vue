@@ -23,8 +23,15 @@
       <v-list nav>
         <v-list-item link>
           <v-list-item-content>
-						<router-link to="/home">
-							<v-list-item-title>Home</v-list-item-title>
+						<router-link to="/login">
+							<v-list-item-title>Login</v-list-item-title>
+						</router-link>
+					</v-list-item-content>
+        </v-list-item>
+        <v-list-item link>
+          <v-list-item-content>
+						<router-link to="/signup">
+							<v-list-item-title>Signup</v-list-item-title>
 						</router-link>
 					</v-list-item-content>
         </v-list-item>
