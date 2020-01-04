@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-app-bar color="deep-purple accent-4" dark>
+    <v-app-bar color="primary accent-4" dark>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
       <v-toolbar-title>Hello Yellow Bus</v-toolbar-title>
       <v-spacer></v-spacer>
