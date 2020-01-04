@@ -13,8 +13,8 @@
         </v-card-text>
         <v-card-text>You don't have an accocunt? You can <router-link to="/signup">create one</router-link>.</v-card-text>
         <v-card-actions>
-          <v-spacer />
-          <v-btn color="primary">Login</v-btn>
+          <v-spacer/>
+          <v-btn color="primary" @click="login">Login</v-btn>
         </v-card-actions>
       </v-card>
     </v-col>
@@ -22,12 +22,26 @@
 </template>
 
 <script>
+import firebase from 'firebase'
+
 export default {
   name: 'login',
   data () {
     return {
       email: '',
       password: '',
+    }
+  },
+  methods: {
+    login() {
+      console.log(this.email, this.password)
+      firebase.auth().signInWithEmailAndPassword(this.email, this.password)
+      .then(user => {
+          console.log(user)
+          this.$router.replace('main')
+        }).catch(err => {
+          alert(err.message)
+        })
     }
   }
 }

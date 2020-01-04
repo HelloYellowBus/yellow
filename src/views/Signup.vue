@@ -14,7 +14,7 @@
         <v-card-text>or go back to <router-link to="/login">login</router-link>.</v-card-text>
         <v-card-actions>
           <v-spacer />
-          <v-btn color="primary">Sign up</v-btn>
+          <v-btn color="primary" @click="signup()">Sign up</v-btn>
         </v-card-actions>
       </v-card>
     </v-col>
@@ -22,12 +22,26 @@
 </template>
 
 <script>
+import firebase from 'firebase'
+
 export default {
   name: 'signup',
   data () {
     return {
       email: '',
       password: '',
+    }
+  },
+  methods: {
+    signup() {
+      console.log(this.email, this.password)
+      firebase.auth().createUserWithEmailAndPassword(this.email, this.password)
+        .then(user => {
+          console.log(user)
+          this.$router.replace('main')
+        }).catch(err => {
+          alert(err.message)
+        })
     }
   }
 }
