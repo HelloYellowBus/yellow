@@ -37,7 +37,7 @@
 
 				<v-card-subtitle class="d-flex justify-space-around">
 					<div><v-icon>mdi-phone-forward</v-icon> 유치원에 연락하기 </div>
-					<div @click="this.alarmstate=!this.alarmstate"><v-icon>mdi-bell-ring-outline</v-icon> 알림</div>
+					<div @click="alarm()"><v-icon>mdi-bell-ring-outline</v-icon> 알림</div>
 					<button @click="getloca">getmyloca</button>
 				</v-card-subtitle>
       </v-card>
@@ -51,13 +51,14 @@
 	}
 </style>
 
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script>
+import axios from 'axios'
 export default {
 	name: "main",
 	data () {
 		return {
 			alarmstate:true,
-			vibrateInterval:null,
 			userloca: {lat:37.40, lng:126.80},
 			center: {
 				lat: 37.50,
@@ -78,6 +79,10 @@ export default {
 		}
 	},
 	methods: {
+		alarm(){
+			this.alarmstate = !this.alarmstate
+			console.log(this.alarmstate)
+		},
 		success(pos) {
 				const crd = pos.coords
 				const lat = crd.latitude
@@ -100,12 +105,12 @@ export default {
 				navigator.vibrate(duration);
 		},
 		stopVibrate() {
-			if(this.vibrateInterval) clearInterval(this.vibrateInterval);
+			if(vibrateInterval) clearInterval(vibrateInterval);
 			navigator.vibrate(0);
 		},
 		startPersistentVibrate(duration, interval) {
 			console.log('vibrating')
-			this.vibrateInterval = setInterval(function() {
+			vibrateInterval = setInterval(function() {
 					this.startVibrate(duration);
 			}, interval);
 		},
